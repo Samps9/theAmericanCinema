@@ -5,6 +5,7 @@ function Page(props){
 
 	const isHomePage = () => {
 		const result = props.data.slug === 'the-american-cinema';
+		console.log(props.data)
 		return result;
 	}
 
@@ -12,6 +13,16 @@ function Page(props){
 		return (
 			<div>
 				<h1>{props.data.title}</h1>
+				{props.data.subheaders.map((sh,i) => (
+					<h2 key={i}>{sh}</h2>
+				))}
+				<div>
+					{props.data.body.map((b, i) => (
+						<p key={i}>{b}</p>
+					))}
+					<p>{props.data.author_signature}</p>
+					<p>{props.data.authors_note}</p>
+				</div>
 			</div>
 		)
 	}
