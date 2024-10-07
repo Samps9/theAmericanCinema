@@ -1,4 +1,10 @@
-.App {
+.main-container { 
+  display: grid;
+  grid-template-columns: 75% 25%;
+}
+
+.list-style-none { list-style: none; }
+/*.App {
   text-align: center;
 }
 
@@ -35,4 +41,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+}*/
