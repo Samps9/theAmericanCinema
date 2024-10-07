@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { slugifyDirector } from './Helpers'
 
-function Chapter(props) {
+const Chapter = forwardRef((props, ref) => {
 	
 	return (
 		<div>
@@ -10,9 +10,9 @@ function Chapter(props) {
 
 			<div>
 				{props.data.directors.map((d,di) => (
-					<div key={di}>
+					<div key={di} ref={ref}>
 						<h2 id={slugifyDirector(d.name)}>{d.name}</h2>
-						<p><strong>FILMS:</strong> {d.films.join('  ')}</p>
+						<p><strong>FILMS:</strong> {d.films ? d.films.join('  ') : null}</p>
 						<div>
 							{d.about.map((a,ai) => (
 								<p key={ai}>{a}</p>
@@ -25,6 +25,6 @@ function Chapter(props) {
 
 		</div>
 	);
-}
+})
 
 export default Chapter;
