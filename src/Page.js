@@ -1,5 +1,7 @@
 import React from 'react';
 import Chapter from './Chapter';
+import Error from './Error';
+
 
 function Page(props){
 
@@ -60,18 +62,9 @@ function Page(props){
 		)
 	}
 
-	const error = () => {
-		return (
-			<div>
-				<h1>This is not a valid page.</h1>
-				<h1>Please use the navigation bar on the right to find a valid page.</h1>
-			</div>
-		)
-	}
-
 	return (
 		<div> 
-			{isHomePage() ? homePage() : isChapter() ? chapter() : isChronPage() ? chronPage() : error()}
+			{isHomePage() ? homePage() : isChapter() ? chapter() : isChronPage() ? chronPage() : <Error></Error>}
 		</div>
 	);
 }

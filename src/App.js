@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Page  from './Page';
 import { slugifyDirector } from './Helpers'
+import Page  from './Page';
+import Error from './Error';
 import './App.css';
+
+
 
 function App() {
 	const location = useLocation();
@@ -52,24 +55,31 @@ function App() {
 		)
 	}
 
+	const getPage = (pages) => {
+		const page = pages.filter((p) => p['slug'] === slug.split('#')[0])
+		if(page.length === 0){
+			return (<Error></Error>)
+		} else {
+			return (page.map((p,i) => (<Page key={i} data={p}></Page> )))
+		}	
+	}
+
 
 	return (
 		<div className="App">
 
-			<div className="main-container">
+			<div className="main-container" style={{paddingTop: '20px'}}>
 				<div style={{paddingLeft: '20px'}}>
-					{pages.filter((p) => p['slug'] === slug.split('#')[0]).map((p,i) => (
-						<Page key={i} data={p}></Page> 
-					))}	
+					{getPage(pages)}	
 				</div>
 				<div style={{paddingLeft: '20px'}}>
-					<nav style={{position: 'sticky', top: '0', height: '100vh', overflow: 'scroll'}}>
+					<nav style={{position: 'sticky', top: '0', height: '100vh', overflow: 'scroll', paddingTop: '20px'}}>
 						{pages.map((p, pi) => (
 							<div key={'p_' + pi} style={{paddingBottom:'10px'}}>
 								<li className="list-style-none">
 									<a href='/' onClick={(e) => handleNavClick(p.slug, null, e)}>{ p.chapter_roman_num ? p.chapter_roman_num + '. ' + p.title : p.title }</a>
 								</li>
-								{ p.chapter_num && p.slug === slug ? p.directors.map((d, di) => (directorLink(d, di, p.slug))) : null }
+								{ p.chapter_num && p.slug === slug.split('#')[0] ? p.directors.map((d, di) => (directorLink(d, di, p.slug))) : null }
 							</div>
 						))}
 					</nav>
