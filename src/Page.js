@@ -5,7 +5,6 @@ function Page(props){
 
 	const isHomePage = () => {
 		const result = props.data.slug === 'the-american-cinema';
-		console.log(props.data)
 		return result;
 	}
 
@@ -47,6 +46,16 @@ function Page(props){
 		return(
 			<div>
 				<h1>{props.data.title}</h1>
+				<div>
+					{Object.keys(props.data).filter((k) => (!isNaN(k))).map((k) => (
+						<div>
+							<h2>{k}</h2>
+							{props.data[k].map((film) => (
+								<p>{film}</p>
+							))}
+						</div>
+					))}
+				</div>
 			</div>
 		)
 	}

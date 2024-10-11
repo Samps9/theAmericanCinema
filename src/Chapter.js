@@ -10,7 +10,7 @@ const Chapter = forwardRef((props, ref) => {
 
 			<div>
 				{props.data.directors.map((d,di) => (
-					<div key={di} ref={ref}>
+					<div key={di}>
 						<h2 id={slugifyDirector(d.name)}>{d.name}</h2>
 						<p><strong>FILMS:</strong> {d.films ? d.films.join('  ') : null}</p>
 						<div>
