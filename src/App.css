@@ -1,6 +1,6 @@
 .main-container { 
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 78% 22%;
 }
 
 .list-style-none { list-style: none; }
