@@ -12,7 +12,7 @@ function Page(props){
 
 	const homePage = () => {
 		return (
-			<div>
+			<div style={{fontFamily: 'arial'}}>
 				<h1>{props.data.title}</h1>
 				{props.data.subheaders.map((sh,i) => (
 					<h2 key={i}>{sh}</h2>
@@ -46,7 +46,7 @@ function Page(props){
 
 	const chronPage = () => {
 		return(
-			<div>
+			<div style={{fontFamily: 'arial'}}>
 				<h1>{props.data.title}</h1>
 				<div>
 					{Object.keys(props.data).filter((k) => (!isNaN(k))).map((k) => (

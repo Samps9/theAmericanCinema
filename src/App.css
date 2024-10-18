@@ -1,9 +1,17 @@
 .main-container { 
   display: grid;
-  grid-template-columns: 75% 25%;
+  grid-template-columns: 74% 26%;
 }
 
 .list-style-none { list-style: none; }
+
+.director { padding-top: 6px; }
+
+.director::marker { color: white; }
+
+.border-left { border-left: 2px solid black; }
+
+.nav-chapter-title { font-weight: bold }
 
 a { color: inherit; }
 
@@ -12,5 +20,10 @@ a { color: inherit; }
     display: grid;
     grid-template-columns: 65% 35%;
   }
+  
   a { font-size: 12px }
+
+  .director {
+    list-style: none;
+  }
 }
