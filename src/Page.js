@@ -1,7 +1,7 @@
 import React from 'react';
 import Chapter from './Chapter';
 import Error from './Error';
-
+import { createMarkup } from './Helpers'
 
 function Page(props){
 
@@ -11,6 +11,12 @@ function Page(props){
 	}
 
 	const homePage = () => {
+		const body = () => {
+			return (
+				<div dangerouslySetInnerHTML={createMarkup(props.data.body)}></div>
+			)
+			
+		}
 		return (
 			<div style={{fontFamily: 'arial'}}>
 				<h1>{props.data.title}</h1>
@@ -18,9 +24,7 @@ function Page(props){
 					<h2 key={i}>{sh}</h2>
 				))}
 				<div>
-					{props.data.body.map((b, i) => (
-						<p key={i}>{b}</p>
-					))}
+					{body()}
 					<p>{props.data.author_signature}</p>
 					<p>{props.data.authors_note}</p>
 				</div>
@@ -45,6 +49,11 @@ function Page(props){
 	}
 
 	const chronPage = () => {
+		const filmsForYear = (htmlString) => {
+			return (
+				<div dangerouslySetInnerHTML={createMarkup(htmlString)}></div>
+			)
+		}
 		return(
 			<div style={{fontFamily: 'arial'}}>
 				<h1>{props.data.title}</h1>
@@ -52,9 +61,7 @@ function Page(props){
 					{Object.keys(props.data).filter((k) => (!isNaN(k))).map((k) => (
 						<div>
 							<h2>{k}</h2>
-							{props.data[k].map((film) => (
-								<p>{film}</p>
-							))}
+							{filmsForYear(props.data[k])}
 						</div>
 					))}
 				</div>

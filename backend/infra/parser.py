@@ -1,5 +1,6 @@
 import os
 import re
+import markdown
 
 class Parser:
     def __init__(self, path):
@@ -54,30 +55,28 @@ class Parser:
                     continue
                 # get the chapter title:
                 elif line_number == 1:
-                    split = line.split('(')
-                    title = split[0].lstrip('\ufeff').strip()
+                    title = line.split('**')[1]
                     self.data['title'] = title
                     self.data['slug'] = re.sub(' ', '-', title.lower())
                     self.data['nav_position'] = self.data['chapter_num'] + 1
                 # get the chapter blurb:
                 elif line_number == 2:
-                    self.data['blurb'] = line.strip()
+                    self.data['blurb'] = line.split('*')[1]
                 # get the directors
                 elif line.isupper():
                     director_line_number = line_number
                     self.data['directors'][director_line_number] = {
-                        'name': line.strip(),
+                        'name': re.sub(re.escape('**'), '', line.strip()),
                         'films': '',
                         'about': []
                     }
                 # get the films:
-                elif line.startswith('FILMS:'):
-                    films = line.lstrip('FILMS:').split('  ')
-                    # TODO: keep whipping films into shape ^
-                    self.data['directors'][director_line_number]['films'] = list(filter(lambda film: len(film) > 0, films))
+                elif line.startswith('**FILMS:**'):
+                    self.data['directors'][director_line_number]['films'] = markdown.markdown(line)
                 # get the text about the director:
                 else:
-                    self.data['directors'][director_line_number]['about'].append(line.strip())
+                    text = markdown.markdown(line.strip())
+                    self.data['directors'][director_line_number]['about'].append(text)
         # simplify directors:
         directors = []
         for key in self.data['directors']:
@@ -86,7 +85,7 @@ class Parser:
         self.data['directors'] = directors
 
     def parse_homepage(self):
-        self.data['body'] = []
+        self.data['body'] = ''
         self.data['nav_position'] = 1
         with open(self.path, 'r', encoding='utf-8-sig') as file:
             line_number = 0
@@ -103,35 +102,36 @@ class Parser:
                     self.data['subheaders'] = []
                     self.data['subheaders'].append(line.strip())
                 elif line_number == 3:
-                    self.data['subheaders'].append(line.strip())
+                    self.data['subheaders'].append(''.join(line.strip().split('\\')))
                 elif 'Sweltz' in line:
                     self.data['author_signature'] = line.strip()
                 elif '*note' in line:
-                    self.data['authors_note'] = line.strip()
+                    self.data['authors_note'] = line.lstrip('\\')
                 else:
-                    self.data['body'].append(line.strip())
+                    self.data['body'] = self.data['body'] + markdown.markdown(line.strip())
 
     def parse_chronology(self):
-        # pick a high nav_position to keep it at the bottom
+        # pick a high nav_position to keep it at the bottom:
         self.data['nav_position'] = 100
+        self.data['body'] = ''
         with open(self.path, 'r', encoding='utf-8-sig') as file:
             year = None
             for line in file:
                 # skip blank lines
                 if not line.strip():
                     continue
-                elif len(line.lstrip('\ufeff').strip()) == 4:
-                    year = line.lstrip('\ufeff').strip()
-                    self.data[year] = []
+                elif line.startswith('**'):
+                    year = line.strip().split('**')[1]
+                    self.data[year] = ''
                 else:
-                    self.data[year].append(line.strip())
+                    self.data[year] = self.data[year] + markdown.markdown(line.strip())
 
     def dump(self):
         return self.data
 
 
 
-# parser = Parser('txt_templates/DIRECTORIAL CHRONOLOGY 1968-2020.txt')
+# parser = Parser('your_file_path_:)')
 # parser.run()
 # print(parser.dump())
 
