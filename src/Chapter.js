@@ -1,8 +1,20 @@
-import React, { forwardRef } from 'react';
-import { slugifyDirector } from './Helpers'
+import React from 'react';
+import { slugifyDirector, createMarkup } from './Helpers'
 
-const Chapter = forwardRef((props, ref) => {
+const Chapter = (props) => {
 	
+	const films = (htmlString) => {
+		return (
+			<div dangerouslySetInnerHTML={createMarkup(htmlString)}></div>
+		)
+	}
+
+	const about = (htmlString) => {
+		return (
+			<div dangerouslySetInnerHTML={createMarkup(htmlString)}></div>
+		)
+	}
+
 	return (
 		<div>
 			<h1 style={{fontFamily: 'arial'}}>{props.data.chapter_roman_num}. {props.data.title}</h1>
@@ -12,19 +24,14 @@ const Chapter = forwardRef((props, ref) => {
 				{props.data.directors.map((d,di) => (
 					<div key={di}>
 						<h2 id={slugifyDirector(d.name)}>{d.name}</h2>
-						<p><strong>FILMS:</strong> {d.films ? d.films.join('  ') : null}</p>
-						<div>
-							{d.about.map((a,ai) => (
-								<p key={ai}>{a}</p>
-							))}
-						</div>
+						{d.films ? films(d.films) : null}
+						{d.about ? about(d.about.join('')) : null}
 					</div>
-					
 				))}
 			</div>
 
 		</div>
 	);
-})
+};
 
 export default Chapter;
