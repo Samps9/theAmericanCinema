@@ -1,7 +1,8 @@
 import React from 'react';
+import Homepage from './Homepage'
 import Chapter from './Chapter';
+import Chronology from './Chronology'
 import Error from './Error';
-import { createMarkup } from './Helpers'
 
 function Page(props){
 
@@ -11,25 +12,7 @@ function Page(props){
 	}
 
 	const homePage = () => {
-		const body = () => {
-			return (
-				<div dangerouslySetInnerHTML={createMarkup(props.data.body)}></div>
-			)
-			
-		}
-		return (
-			<div style={{fontFamily: 'arial'}}>
-				<h1>{props.data.title}</h1>
-				{props.data.subheaders.map((sh,i) => (
-					<h2 key={i}>{sh}</h2>
-				))}
-				<div>
-					{body()}
-					<p>{props.data.author_signature}</p>
-					<p>{props.data.authors_note}</p>
-				</div>
-			</div>
-		)
+		return (<Homepage data={props.data}></Homepage>);
 	}
 
 	const isChapter = () => {
@@ -38,9 +21,7 @@ function Page(props){
 	}
 
 	const chapter = () => {
-		return (
-			<Chapter data={props.data}></Chapter>
-		)
+		return (<Chapter data={props.data}></Chapter>);
 	}
 
 	const isChronPage = () => {
@@ -49,24 +30,7 @@ function Page(props){
 	}
 
 	const chronPage = () => {
-		const filmsForYear = (htmlString) => {
-			return (
-				<div dangerouslySetInnerHTML={createMarkup(htmlString)}></div>
-			)
-		}
-		return(
-			<div style={{fontFamily: 'arial'}}>
-				<h1>{props.data.title}</h1>
-				<div>
-					{Object.keys(props.data).filter((k) => (!isNaN(k))).map((k) => (
-						<div>
-							<h2>{k}</h2>
-							{filmsForYear(props.data[k])}
-						</div>
-					))}
-				</div>
-			</div>
-		)
+		return (<Chronology data={props.data}></Chronology>);	
 	}
 
 	return (
