@@ -13,6 +13,7 @@ function App() {
 	const [pages, setPages] = useState([]);
 	const [slug, setSlug] = useState('');
 	const [year, setYear] = useState(null);
+	const [showNavSubheaders, setShowNavSubheaders] = useState(true);
 
 	useEffect(() => {
 		fetch('/data').then(res => res.json()).then(data => {
@@ -39,20 +40,27 @@ function App() {
 		});
 	}, [location]);
 
-	const handleNavClick = (slug, elementId, e) => {
+	const handleNavClick = (newSlug, elementId, e) => {
 		// prevent page load so we only ever load data on request rather than on navigation:
 		e.preventDefault();
-		// still have the url update:
-		window.history.replaceState(null, "New Page Title", slug);
-		// setting slug effectively 'navigates' by showing the relevant content:
-		setSlug(slug);
-		const scrollToElement = document.getElementById(elementId);
-		if(scrollToElement){
-			// if there is an element to scroll to, scroll to it
-			scrollToElement.scrollIntoView({ behavior: 'smooth' });
+
+		if(newSlug === slug){
+			// if we aren't going to a different page than the one currently selected, just toggle the visibility on the subheaders:
+			setShowNavSubheaders(!showNavSubheaders);
 		} else {
-			// make sure we return to the top of the page when we 'navigate' to a new page:
-			window.scrollTo(0, 0);
+			setShowNavSubheaders(true);
+			// still have the url update:
+			window.history.replaceState(null, "New Page Title", newSlug);
+			// setting slug effectively 'navigates' by showing the relevant content:
+			setSlug(newSlug);
+			const scrollToElement = document.getElementById(elementId);
+			if(scrollToElement){
+				// if there is an element to scroll to, scroll to it
+				scrollToElement.scrollIntoView({ behavior: 'smooth' });
+			} else {
+				// make sure we return to the top of the page when we 'navigate' to a new page:
+				window.scrollTo(0, 0);
+			}
 		}	
 	};
 
@@ -111,8 +119,8 @@ function App() {
 								<li className="list-style-none nav-chapter-title">
 									<a href='/' onClick={(e) => handleNavClick(p.slug, null, e)}>{ p.chapter_roman_num ? p.chapter_roman_num + '. ' + p.title : p.title }</a>
 								</li>
-								{ p.chapter_num && p.slug === slug.split('#')[0] ? p.directors.map((d, di) => (directorLink(d, di, p.slug))) : null }
-								{ slug === 'directorial-chronology-1968-2020' ? Object.keys(p).filter((k) => (!isNaN(k))).map((k) => (chronLink(k))) : null}
+								{ showNavSubheaders && p.chapter_num && p.slug === slug.split('#')[0] ? p.directors.map((d, di) => (directorLink(d, di, p.slug))) : null }
+								{ showNavSubheaders && slug === 'directorial-chronology-1968-2020' ? Object.keys(p).filter((k) => (!isNaN(k))).map((k) => (chronLink(k))) : null}
 							</div>
 						))}
 					</nav>
