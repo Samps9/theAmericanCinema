@@ -2,24 +2,25 @@ import React from 'react';
 import { createMarkup } from './Helpers'
 
 
-const Chronology = (props) => {
+const Chronology = ({data, year}) => {
+	const getYear = () => {
+		return(year ? year : '1968');
+	}
 	const filmsForYear = (htmlString) => {
 		return ( <div dangerouslySetInnerHTML={createMarkup(htmlString)}></div> );
-	}
+	};
 
 	return(
 			<div style={{fontFamily: 'arial'}}>
-				<h1>{props.data.title}</h1>
+				<h1>{data.title}</h1>
 				<div>
-					{Object.keys(props.data).filter((k) => (!isNaN(k))).map((k) => (
-						<div>
-							<h2>{k}</h2>
-							{filmsForYear(props.data[k])}
-						</div>
-					))}
+					<div key={'chron_' + year} id={year}>
+						<h2>{getYear()}</h2>
+						{filmsForYear(data[getYear()])}
+					</div>
 				</div>
 			</div>
-		)
-}
+		);
+};
 
 export default Chronology;

@@ -1,13 +1,13 @@
 .main-container { 
   display: grid;
-  grid-template-columns: 74% 26%;
+  grid-template-columns: 72% 28%;
 }
 
 .list-style-none { list-style: none; }
 
-.director { padding-top: 6px; }
+.nav-sub-header { padding-top: 6px; }
 
-.director::marker { color: white; }
+.nav-sub-header::marker { color: white; }
 
 .border-left { border-left: 2px solid black; }
 
