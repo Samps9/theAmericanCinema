@@ -1,7 +1,7 @@
 import React from 'react';
 import Homepage from './Homepage'
 import Chapter from './Chapter';
-import Chronology from './Chronology'
+import Chronology from './Chronology';
 import Error from './Error';
 
 function Page({data, year}){
@@ -31,7 +31,7 @@ function Page({data, year}){
 
 	const chronPage = (year) => {
 		return (<Chronology data={data} year={year}></Chronology>);	
-	}
+	}	
 
 	return (
 		<div> 

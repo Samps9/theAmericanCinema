@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { slugifyDirector } from './Helpers'
+import Loading from './Loading';
 import Page  from './Page';
 import Error from './Error';
 import './App.css';
@@ -35,7 +36,6 @@ function App() {
 					}
 				}
 			}
-			
 		});
 	}, [location]);
 
@@ -85,12 +85,16 @@ function App() {
 	};
 
 	const getPage = (pages) => {
-		const page = pages.filter((p) => p['slug'] === slug.split('#')[0]);
-		if(page.length === 0){
-			return (<Error></Error>);
+		if(pages.length === 0){ 
+			return(<Loading></Loading>);
 		} else {
-			return (page.map((p,i) => (<Page key={i} data={p} year={year}></Page>)));
-		}	
+			const page = pages.filter((p) => p['slug'] === slug.split('#')[0]);
+			if(page.length === 0){
+				return (<Error></Error>);
+			} else {
+				return (page.map((p,i) => (<Page key={i} data={p} year={year}></Page>)));
+			}	
+		}
 	};
 
 	return (
